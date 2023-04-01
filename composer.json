@@ -1,0 +1,27 @@
+{
+    "name": "leonardo/clean-arch-and-clean-code",
+    "type": "project",
+    "authors": [
+        {
+            "name": "leosteil",
+            "email": "lsteil@inf.ufsm.br"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CleanArch\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "phpunit/php-code-coverage": "^10.0"
+    },
+    "require": {
+        "nikic/fast-route": "^1.3",
+        "guzzlehttp/guzzle": "^7.5",
+        "geekcom/validator-docs": "^3.9",
+        "slim/slim": "^4.11",
+        "doctrine/dbal": "^3.6"
+    }
+}
