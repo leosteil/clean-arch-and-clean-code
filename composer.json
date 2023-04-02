@@ -22,6 +22,8 @@
         "guzzlehttp/guzzle": "^7.5",
         "geekcom/validator-docs": "^3.9",
         "slim/slim": "^4.11",
-        "doctrine/dbal": "^3.6"
+        "doctrine/dbal": "^3.6",
+        "php-ds/php-ds": "^1.4",
+        "ext-ds": "*"
     }
 }

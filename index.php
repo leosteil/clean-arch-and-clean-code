@@ -3,7 +3,6 @@
 use Doctrine\DBAL\DriverManager;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -121,7 +120,7 @@ $app->post('/checkout', function (Request $request, Response $response, $args) {
 
 readonly class Output
 {
-    public function __construct(public float $total, public string $message, public float $freight)
+    public function __construct(public float $total, public string $message, public float $freight = 0)
     {
     }
 
@@ -141,5 +140,3 @@ readonly class Output
 }
 
 $app->run();
-
-
