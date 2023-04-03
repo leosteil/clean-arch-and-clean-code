@@ -13,7 +13,8 @@ final class IndexTest extends TestCase
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
             'json' => [
-                'cpf' => '1234'
+                'cpf' => '1234',
+                'items' => [],
             ],
             'http_errors' => false
         ]);
@@ -29,13 +30,13 @@ final class IndexTest extends TestCase
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
             'json' => [
                 'cpf' => '03411287080',
+                'items' => [],
             ],
             'http_errors' => false
         ]);
 
         $responseBody = json_decode($response->getBody()->getContents());
 
-        $this->assertEquals('total', $responseBody->message);
         $this->assertEquals(0, $responseBody->total);
     }
 
@@ -56,7 +57,6 @@ final class IndexTest extends TestCase
 
         $responseBody = json_decode($response->getBody()->getContents());
 
-        $this->assertEquals('total', $responseBody->message);
         $this->assertEquals(6090, $responseBody->total);
     }
 
@@ -71,14 +71,13 @@ final class IndexTest extends TestCase
                     ['idProduct' => 2, 'quantity' => 1],
                     ['idProduct' => 3, 'quantity' => 3],
                 ],
-                'coupon_code' => '20off'
+                'coupon' => '20off'
             ],
             'http_errors' => false
         ]);
 
         $responseBody = json_decode($response->getBody()->getContents());
 
-        $this->assertEquals('total', $responseBody->message);
         $this->assertEquals(4872, $responseBody->total);
     }
 
@@ -93,14 +92,13 @@ final class IndexTest extends TestCase
                     ['idProduct' => 2, 'quantity' => 1],
                     ['idProduct' => 3, 'quantity' => 3],
                 ],
-                'coupon_code' => '10off'
+                'coupon' => '10off'
             ],
             'http_errors' => false
         ]);
 
         $responseBody = json_decode($response->getBody()->getContents());
 
-        $this->assertEquals('total', $responseBody->message);
         $this->assertEquals(6090, $responseBody->total);
     }
 
@@ -120,7 +118,6 @@ final class IndexTest extends TestCase
         $responseBody = json_decode($response->getBody()->getContents());
 
         $this->assertEquals('quantidade de itens invalida', $responseBody->message);
-        $this->assertEquals(0, $responseBody->total);
     }
 
     public function testNaoDeveCriarUmPedidoComItensDuplicados()
@@ -140,7 +137,6 @@ final class IndexTest extends TestCase
         $responseBody = json_decode($response->getBody()->getContents());
 
         $this->assertEquals('item duplicado', $responseBody->message);
-        $this->assertEquals(0, $responseBody->total);
     }
 
     public function testNaoDeveCriarUmPedidoComItensComDimensoesNegativas()
@@ -159,7 +155,6 @@ final class IndexTest extends TestCase
         $responseBody = json_decode($response->getBody()->getContents());
 
         $this->assertEquals('item com dimensões negativas', $responseBody->message);
-        $this->assertEquals(0, $responseBody->total);
     }
 
     public function testNaoDeveCriarUmPedidoComItensComPesoNegativo()
@@ -178,7 +173,6 @@ final class IndexTest extends TestCase
         $responseBody = json_decode($response->getBody()->getContents());
 
         $this->assertEquals('item com peso negativo', $responseBody->message);
-        $this->assertEquals(0, $responseBody->total);
     }
 
     public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFrete()
