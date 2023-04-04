@@ -2,22 +2,12 @@
 
 namespace CleanArch\Checkout;
 
-use Doctrine\DBAL\DriverManager;
+require __DIR__ . '/../../cpf_validator.php';
 
 class Checkout
 {
     public function execute(Input $input): Output
     {
-        $connectionParams = [
-            'dbname' => 'app',
-            'user' => 'postgres',
-            'password' => '123abc',
-            'host' => 'localhost',
-            'driver' => 'pdo_pgsql',
-        ];
-
-        $conn = DriverManager::getConnection($connectionParams);
-
         $isCpfValid = validaCPF($input->cpf);
 
         if (!$isCpfValid) {
@@ -38,11 +28,8 @@ class Checkout
                 throw new \InvalidArgumentException('item duplicado');
             }
 
-            $sql = "SELECT * FROM cccat10.product where id_product = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue(1, $item->idProduct);
-            $resultSet = $stmt->executeQuery();
-            $product = $resultSet->fetchAssociative();
+            $productRepository = new ProductRepositoryDatabase();
+            $product = $productRepository->getProduct($item->idProduct);
 
             if ($product['width'] < 0 || $product['height'] < 0 || $product['length'] < 0) {
                 throw new \InvalidArgumentException('item com dimensões negativas');
@@ -63,11 +50,8 @@ class Checkout
         }
 
         if ($input->coupon) {
-            $sql = "SELECT * FROM cccat10.coupon where coupon_code = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue(1, $input->coupon);
-            $resultSer = $stmt->executeQuery();
-            $coupon = $resultSer->fetchAssociative();
+            $couponRepository = new CouponRepositoryDatabase();
+            $coupon = $couponRepository->getCoupon($input->coupon);
 
             if (date($coupon['expires_at']) > date("Y-m-d H:i:s")) {
                 $total = $total - ($total * ($coupon['discount']) / 100);
