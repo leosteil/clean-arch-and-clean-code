@@ -223,4 +223,23 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(10, $output->freight);
         $this->assertEquals(40, $output->total);
     }
+
+    public function testDeveCriarUmPedidoCom1ProdutoEmDolar()
+    {
+        $items = [
+            ['idProduct' => 6, 'quantity' => 1],
+        ];
+
+        $itemsCollection = new Items();
+
+        foreach ($items as $item) {
+            $itemForCollection = new Item($item['idProduct'], $item['quantity']);
+            $itemsCollection->add($itemForCollection);
+        }
+
+        $input = new Input('03411287080', $itemsCollection);
+        $output = $this->checkout->execute($input);
+
+        $this->assertEquals(3000, $output->total);
+    }
 }

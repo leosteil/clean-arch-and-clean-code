@@ -2,6 +2,8 @@
 
 namespace CleanArch\Checkout;
 
+use CleanArch\CurrencyGatewayHttp;
+
 require __DIR__ . '/../../cpf_validator.php';
 
 class Checkout
@@ -18,6 +20,9 @@ class Checkout
         $freight = 0;
 
         $itemsId = array();
+
+        $currencyGateway = new CurrencyGatewayHttp();
+        $currencies = $currencyGateway->getCurrencies();
 
         foreach ($input->items as $item) {
             if ($item->quantity < 0) {
@@ -39,7 +44,11 @@ class Checkout
                 throw new \InvalidArgumentException('item com peso negativo');
             }
 
-            $total += $product['price'] * $item->quantity;
+            if ($product['currency'] === 'USD') {
+                $total += $product['price'] * $item->quantity * $currencies['usd'];
+            } else {
+                $total += $product['price'] * $item->quantity;
+            }
 
             $volume = $product['width'] / 100 * $product['height'] / 100 * $product['length'] / 100;
             $density = floatval($product['weight']) / $volume;

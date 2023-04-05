@@ -7,7 +7,6 @@ use GuzzleHttp\Client;
 
 final class IndexTest extends TestCase
 {
-
     public function testNaoDeveCriarUmPedidoComCPFInvalido()
     {
         $client = new Client();
