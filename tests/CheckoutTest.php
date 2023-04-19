@@ -6,6 +6,7 @@ use CleanArch\Checkout\Checkout;
 use CleanArch\Checkout\Input;
 use CleanArch\Checkout\Item;
 use CleanArch\Checkout\Items;
+use CleanArch\CurrencyGateway;
 use PHPUnit\Framework\TestCase;
 
 final class CheckoutTest extends TestCase
@@ -16,7 +17,7 @@ final class CheckoutTest extends TestCase
     {
         $this->checkout = new Checkout();
     }
-    
+
     public function testNaoDeveCriarUmPedidoComCPFInvalido()
     {
         $input = new Input(1234, new Items());
@@ -240,6 +241,34 @@ final class CheckoutTest extends TestCase
         $input = new Input('03411287080', $itemsCollection);
         $output = $this->checkout->execute($input);
 
+        $this->assertEquals(3000, $output->total);
+    }
+
+    public function testDeveCriarUmPedidoCom1ProdutoEmDolarUsandoUmFake(): void
+    {
+        $currencyGateway = $this->createMock(CurrencyGateway::class);
+        $currencyGateway->expects($this->once())
+            ->method('getCurrencies')
+            ->willReturn([
+                'usd' => 3
+            ]);
+
+        $items = [
+            ['idProduct' => 6, 'quantity' => 1],
+        ];
+
+        $itemsCollection = new Items();
+
+        foreach ($items as $item) {
+            $itemForCollection = new Item($item['idProduct'], $item['quantity']);
+            $itemsCollection->add($itemForCollection);
+        }
+
+        $input = new Input('03411287080', $itemsCollection);
+
+        $checkout = new Checkout($currencyGateway);
+
+        $output = $checkout->execute($input);
         $this->assertEquals(3000, $output->total);
     }
 }

@@ -4,7 +4,7 @@ namespace CleanArch;
 
 use GuzzleHttp\Client;
 
-class CurrencyGatewayHttp
+class CurrencyGatewayHttp implements CurrencyGateway
 {
     public function getCurrencies(): array
     {

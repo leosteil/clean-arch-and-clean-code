@@ -4,7 +4,7 @@ namespace CleanArch\Checkout;
 
 use Doctrine\DBAL\DriverManager;
 
-class CouponRepositoryDatabase
+class CouponRepositoryDatabase implements CouponRepository
 {
     public function getCoupon(string $code)
     {

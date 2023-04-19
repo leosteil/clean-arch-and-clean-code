@@ -4,7 +4,7 @@ namespace CleanArch\Checkout;
 
 use Doctrine\DBAL\DriverManager;
 
-class ProductRepositoryDatabase
+class ProductRepositoryDatabase implements ProductRepository
 {
     public function getProduct(int $idProduct)
     {

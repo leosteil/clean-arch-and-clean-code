@@ -2,7 +2,7 @@
 
 namespace CleanArch;
 
-class CurrencyGateway
+interface CurrencyGateway
 {
-
+    public function getCurrencies(): array;
 }

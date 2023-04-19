@@ -2,12 +2,20 @@
 
 namespace CleanArch\Checkout;
 
+use CleanArch\CurrencyGateway;
 use CleanArch\CurrencyGatewayHttp;
 
 require __DIR__ . '/../../cpf_validator.php';
 
 class Checkout
 {
+    public function __construct(
+        private readonly CurrencyGateway $currencyGateway = new CurrencyGatewayHttp(),
+        private readonly ProductRepository $productRepository = new ProductRepositoryDatabase(),
+        private readonly CouponRepository $couponRepository = new CouponRepositoryDatabase()
+    ) {
+    }
+
     public function execute(Input $input): Output
     {
         $isCpfValid = validaCPF($input->cpf);
@@ -21,8 +29,7 @@ class Checkout
 
         $itemsId = array();
 
-        $currencyGateway = new CurrencyGatewayHttp();
-        $currencies = $currencyGateway->getCurrencies();
+        $currencies = $this->currencyGateway->getCurrencies();
 
         foreach ($input->items as $item) {
             if ($item->quantity < 0) {
@@ -33,8 +40,7 @@ class Checkout
                 throw new \InvalidArgumentException('item duplicado');
             }
 
-            $productRepository = new ProductRepositoryDatabase();
-            $product = $productRepository->getProduct($item->idProduct);
+            $product = $this->productRepository->getProduct($item->idProduct);
 
             if ($product['width'] < 0 || $product['height'] < 0 || $product['length'] < 0) {
                 throw new \InvalidArgumentException('item com dimensões negativas');
@@ -59,8 +65,7 @@ class Checkout
         }
 
         if ($input->coupon) {
-            $couponRepository = new CouponRepositoryDatabase();
-            $coupon = $couponRepository->getCoupon($input->coupon);
+            $coupon = $this->couponRepository->getCoupon($input->coupon);
 
             if (date($coupon['expires_at']) > date("Y-m-d H:i:s")) {
                 $total = $total - ($total * ($coupon['discount']) / 100);
