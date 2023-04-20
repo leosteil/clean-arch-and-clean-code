@@ -2,9 +2,9 @@
 
 namespace CleanArch\Checkout;
 
-readonly class Item
+class Item
 {
-    public function __construct(public int $idProduct, public int $quantity)
+    public function __construct(readonly public int $idProduct, readonly public int $quantity, public ?float $price = null)
     {
     }
 }

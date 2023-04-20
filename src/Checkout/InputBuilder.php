@@ -50,6 +50,7 @@ class InputBuilder
     public function build(): Input
     {
         return new Input(
+            '123',
             $this->cpf,
             $this->items,
             $this->coupon,

@@ -1,3 +1,5 @@
+drop table cccat10.item;
+drop table cccat10.order;
 drop table cccat10.product;
 drop table cccat10.coupon;
 
@@ -32,3 +34,18 @@ create table cccat10.coupon (
 
 insert into cccat10.coupon (coupon_code, discount, expires_at) values ('20off', 20, '2024-03-14');
 insert into cccat10.coupon (coupon_code, discount, expires_at) values ('10off', 20, '2022-03-14');
+
+
+create table cccat10.order (
+    id_order text,
+    cpf text,
+    total numeric,
+    freight numeric
+);
+
+create table cccat10.item (
+    id_order text,
+    id_product integer,
+    price numeric,
+    quantity integer
+)

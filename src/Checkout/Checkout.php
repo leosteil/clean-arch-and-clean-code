@@ -4,6 +4,8 @@ namespace CleanArch\Checkout;
 
 use CleanArch\CurrencyGateway;
 use CleanArch\CurrencyGatewayHttp;
+use CleanArch\Order;
+use CleanArch\OrderRepository;
 
 require __DIR__ . '/../../cpf_validator.php';
 
@@ -12,7 +14,8 @@ class Checkout
     public function __construct(
         private readonly CurrencyGateway $currencyGateway = new CurrencyGatewayHttp(),
         private readonly ProductRepository $productRepository = new ProductRepositoryDatabase(),
-        private readonly CouponRepository $couponRepository = new CouponRepositoryDatabase()
+        private readonly CouponRepository $couponRepository = new CouponRepositoryDatabase(),
+        private readonly OrderRepository $orderRepository = new Order\OrderRepositoryDatabase(),
     ) {
     }
 
@@ -61,6 +64,7 @@ class Checkout
             $itemFreight = 1000 * $volume * ($density / 100);
 
             $freight += max($itemFreight, 10) * $item->quantity;
+            $item->price = $product['price'];
             $itemsId[] = $item->idProduct;
         }
 
@@ -75,6 +79,16 @@ class Checkout
         if ($input->from && $input->to) {
             $total += $freight;
         }
+
+        $order = new Order(
+            $input->id,
+            $total,
+            $freight,
+            $input->cpf,
+            $input->items
+        );
+
+        $this->orderRepository->save($order);
 
         return new Output($total, $freight);
     }

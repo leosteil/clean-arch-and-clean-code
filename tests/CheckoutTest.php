@@ -7,15 +7,18 @@ use CleanArch\Checkout\Input;
 use CleanArch\Checkout\Item;
 use CleanArch\Checkout\Items;
 use CleanArch\CurrencyGateway;
+use CleanArch\Order\GetOrder;
 use PHPUnit\Framework\TestCase;
 
 final class CheckoutTest extends TestCase
 {
     private Checkout $checkout;
+    private GetOrder $getOrder;
 
     public function setUp(): void
     {
         $this->checkout = new Checkout();
+        $this->getOrder = new GetOrder();
     }
 
     public function testNaoDeveCriarUmPedidoComCPFInvalido()
@@ -39,6 +42,8 @@ final class CheckoutTest extends TestCase
 
     public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotal()
     {
+        $uuid = uniqid();
+
         $items = [
             ['idProduct' => 1, 'quantity' => 1],
             ['idProduct' => 2, 'quantity' => 1],
@@ -52,8 +57,10 @@ final class CheckoutTest extends TestCase
             $itemsCollection->add($itemForCollection);
         }
 
-        $input = new Input('03411287080', $itemsCollection);
-        $output = $this->checkout->execute($input);
+        $input = new Input($uuid, '03411287080', $itemsCollection);
+        $this->checkout->execute($input);
+
+        $output = $this->getOrder->execute($uuid);
 
         $this->assertEquals(6090, $output->total);
     }
