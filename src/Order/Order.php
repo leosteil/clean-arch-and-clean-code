@@ -1,6 +1,6 @@
 <?php
 
-namespace CleanArch;
+namespace CleanArch\Order;
 
 use CleanArch\Checkout\Items;
 
@@ -11,6 +11,7 @@ readonly class Order
         public string $total,
         public string $freight,
         public string $cpf,
+        public string $code,
         public Items $items
     ) {
     }

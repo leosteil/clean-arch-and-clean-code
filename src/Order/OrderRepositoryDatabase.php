@@ -3,8 +3,6 @@
 namespace CleanArch\Order;
 
 use CleanArch\Checkout\Items;
-use CleanArch\Order;
-use CleanArch\OrderRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
@@ -26,7 +24,7 @@ class OrderRepositoryDatabase implements OrderRepository
         $connection->close();
     }
 
-    public function getById(string $id)
+    public function getById(string $id): Order
     {
         $connection = $this->createConnection();
         $queryBuilder = $connection->createQueryBuilder();
@@ -35,9 +33,17 @@ class OrderRepositoryDatabase implements OrderRepository
             ->from('cccat10.order')
             ->where('id_order = ?')
             ->setParameter(0, $id)
-            ->executeQuery();
+            ->executeQuery()
+            ->fetchAssociative();
 
-        return $order;
+        return new Order(
+            $order['id_order'],
+            $order['total'],
+            $order['freight'],
+            $order['cpf'],
+            $order['code'],
+            new Items()
+        );
     }
 
     private function createConnection(): Connection
@@ -62,14 +68,16 @@ class OrderRepositoryDatabase implements OrderRepository
                 [
                     'id_order' => '?',
                     'cpf' => '?',
+                    'code' => '?',
                     'total' => '?',
                     'freight' => '?',
                 ]
             )
             ->setParameter(0, $order->idOrder)
             ->setParameter(1, $order->cpf)
-            ->setParameter(2, $order->total)
-            ->setParameter(3, $order->freight);
+            ->setParameter(2, $order->code)
+            ->setParameter(3, $order->total)
+            ->setParameter(4, $order->freight);
 
         $queryBuilder->executeQuery();
     }
@@ -95,5 +103,16 @@ class OrderRepositoryDatabase implements OrderRepository
 
             $queryBuilder->executeQuery();
         }
+    }
+
+    public function count(): int
+    {
+        $connection = $this->createConnection();
+        $queryBuilder = $connection->createQueryBuilder();
+        return $queryBuilder
+            ->select('*')
+            ->from('cccat10.order')
+            ->executeQuery()
+            ->rowCount();
     }
 }

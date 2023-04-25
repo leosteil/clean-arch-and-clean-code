@@ -5,7 +5,7 @@ namespace CleanArch\Checkout;
 readonly class Input
 {
     public function __construct(
-        public ?string $id,
+        public string $id,
         public string $cpf,
         public Items $items,
         public ?string $coupon = null,

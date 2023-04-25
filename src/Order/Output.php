@@ -4,7 +4,7 @@ namespace CleanArch\Order;
 
 class Output
 {
-    public function __construct(public float $total, public float $freight)
+    public function __construct(public float $total, public float $freight, public string $code)
     {
     }
 
@@ -17,7 +17,8 @@ class Output
     {
         return [
             'total' => $this->total,
-            'freight' => $this->freight
+            'freight' => $this->freight,
+            'code' => $this->code
         ];
     }
 }

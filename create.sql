@@ -39,6 +39,7 @@ insert into cccat10.coupon (coupon_code, discount, expires_at) values ('10off', 
 create table cccat10.order (
     id_order text,
     cpf text,
+    code text,
     total numeric,
     freight numeric
 );

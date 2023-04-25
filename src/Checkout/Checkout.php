@@ -4,8 +4,9 @@ namespace CleanArch\Checkout;
 
 use CleanArch\CurrencyGateway;
 use CleanArch\CurrencyGatewayHttp;
-use CleanArch\Order;
-use CleanArch\OrderRepository;
+use CleanArch\Order\Order;
+use CleanArch\Order\OrderRepository;
+use CleanArch\Order\OrderRepositoryDatabase;
 
 require __DIR__ . '/../../cpf_validator.php';
 
@@ -15,7 +16,7 @@ class Checkout
         private readonly CurrencyGateway $currencyGateway = new CurrencyGatewayHttp(),
         private readonly ProductRepository $productRepository = new ProductRepositoryDatabase(),
         private readonly CouponRepository $couponRepository = new CouponRepositoryDatabase(),
-        private readonly OrderRepository $orderRepository = new Order\OrderRepositoryDatabase(),
+        private readonly OrderRepository $orderRepository = new OrderRepositoryDatabase()
     ) {
     }
 
@@ -80,11 +81,16 @@ class Checkout
             $total += $freight;
         }
 
+        $year = date('Y');
+        $sequence = str_pad(strval($this->orderRepository->count()), 8, "0", STR_PAD_LEFT);
+        $code = "{$year}{$sequence}";
+
         $order = new Order(
             $input->id,
             $total,
             $freight,
             $input->cpf,
+            $code,
             $input->items
         );
 

@@ -2,8 +2,6 @@
 
 namespace CleanArch\Order;
 
-use CleanArch\Checkout\Output;
-use CleanArch\OrderRepository;
 
 class GetOrder
 {
@@ -16,8 +14,6 @@ class GetOrder
     {
         $orderData = $this->orderRepository->getById($id);
 
-        var_dump($orderData->fetchAllKeyValue());
-
-        return new Output($orderData->total, $orderData->freight);
+        return new Output($orderData->total, $orderData->freight, $orderData->code);
     }
 }
