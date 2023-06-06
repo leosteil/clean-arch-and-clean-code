@@ -8,16 +8,17 @@ use CleanArch\CurrencyGatewayHttp;
 use CleanArch\Order\Order;
 use CleanArch\Order\OrderRepository;
 use CleanArch\Order\OrderRepositoryDatabase;
+use InvalidArgumentException;
 
 require __DIR__ . '/../../cpf_validator.php';
 
-class Checkout
+readonly class Checkout
 {
     public function __construct(
-        private readonly CurrencyGateway $currencyGateway = new CurrencyGatewayHttp(),
-        private readonly ProductRepository $productRepository = new ProductRepositoryDatabase(),
-        private readonly CouponRepository $couponRepository = new CouponRepositoryDatabase(),
-        private readonly OrderRepository $orderRepository = new OrderRepositoryDatabase()
+        private CurrencyGateway   $currencyGateway = new CurrencyGatewayHttp(),
+        private ProductRepository $productRepository = new ProductRepositoryDatabase(),
+        private CouponRepository  $couponRepository = new CouponRepositoryDatabase(),
+        private OrderRepository   $orderRepository = new OrderRepositoryDatabase()
     ) {
     }
 
@@ -27,7 +28,7 @@ class Checkout
         $isCpfValid = $cpfValidator->validate($input->cpf);
 
         if (!$isCpfValid) {
-            throw new \InvalidArgumentException('cpf invalido');
+            throw new InvalidArgumentException('cpf invalido');
         }
 
         $total = 0;
@@ -39,21 +40,21 @@ class Checkout
 
         foreach ($input->items as $item) {
             if ($item->quantity < 0) {
-                throw new \InvalidArgumentException('quantidade de itens invalida');
+                throw new InvalidArgumentException('quantidade de itens invalida');
             }
 
             if (in_array($item->idProduct, $itemsId, true)) {
-                throw new \InvalidArgumentException('item duplicado');
+                throw new InvalidArgumentException('item duplicado');
             }
 
             $product = $this->productRepository->getProduct($item->idProduct);
 
             if ($product['width'] < 0 || $product['height'] < 0 || $product['length'] < 0) {
-                throw new \InvalidArgumentException('item com dimensões negativas');
+                throw new InvalidArgumentException('item com dimensões negativas');
             }
 
             if ($product['weight'] < 0) {
-                throw new \InvalidArgumentException('item com peso negativo');
+                throw new InvalidArgumentException('item com peso negativo');
             }
 
             if ($product['currency'] === 'USD') {
@@ -85,7 +86,7 @@ class Checkout
 
         $year = date('Y');
         $sequence = str_pad(strval($this->orderRepository->count()), 8, "0", STR_PAD_LEFT);
-        $code = "{$year}{$sequence}";
+        $code = "$year$sequence";
 
         $order = new Order(
             $input->id,

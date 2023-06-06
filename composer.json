@@ -18,9 +18,11 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0",
         "phpunit/php-code-coverage": "^10.0",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.17"
     },
     "require": {
+        "php": "^8.2",
         "nikic/fast-route": "^1.3",
         "guzzlehttp/guzzle": "^7.5",
         "geekcom/validator-docs": "^3.9",
@@ -30,6 +32,7 @@
         "ext-ds": "*"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests/"
+        "test": "vendor/bin/phpunit tests/",
+        "php-cs-fixer": "php-cs-fixer"
     }
 }

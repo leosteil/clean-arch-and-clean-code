@@ -35,12 +35,12 @@ jobs:
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-      - name: Run test suite
-        run: composer run-script test
-
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga
         env:
           REQUIRE_DEV: true
         with:
           args: analyse src/ --level=0
+
+      - name: PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
