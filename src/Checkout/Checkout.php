@@ -12,14 +12,18 @@ use InvalidArgumentException;
 
 require __DIR__ . '/../../cpf_validator.php';
 
-readonly class Checkout
+class Checkout
 {
     public function __construct(
-        private CurrencyGateway   $currencyGateway = new CurrencyGatewayHttp(),
-        private ProductRepository $productRepository = new ProductRepositoryDatabase(),
-        private CouponRepository  $couponRepository = new CouponRepositoryDatabase(),
-        private OrderRepository   $orderRepository = new OrderRepositoryDatabase()
+        private readonly CurrencyGateway   $currencyGateway = new CurrencyGatewayHttp(),
+        private readonly ProductRepository $productRepository = new ProductRepositoryDatabase(),
+        private readonly CouponRepository  $couponRepository = new CouponRepositoryDatabase(),
+        private readonly OrderRepository $orderRepository = new OrderRepositoryDatabase()
     ) {
+    }
+
+    public function testing(){
+        
     }
 
     public function execute(Input $input): Output
