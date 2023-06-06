@@ -2,6 +2,7 @@
 
 namespace CleanArch\Checkout;
 
+use CleanArch\CPFValidator;
 use CleanArch\CurrencyGateway;
 use CleanArch\CurrencyGatewayHttp;
 use CleanArch\Order\Order;
@@ -22,7 +23,8 @@ class Checkout
 
     public function execute(Input $input): Output
     {
-        $isCpfValid = validaCPF($input->cpf);
+        $cpfValidator = new CPFValidator();
+        $isCpfValid = $cpfValidator->validate($input->cpf);
 
         if (!$isCpfValid) {
             throw new \InvalidArgumentException('cpf invalido');
