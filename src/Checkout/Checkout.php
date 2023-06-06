@@ -28,7 +28,7 @@ readonly class Checkout
         $isCpfValid = $cpfValidator->validate($input->cpf);
 
         if (!$isCpfValid) {
-            throw new InvalidArgumentException('cpf invalido');
+            throw new InvalidArgumentException('cpf inválido');
         }
 
         $total = 0;
