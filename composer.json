@@ -1,6 +1,8 @@
 {
     "name": "leonardo/clean-arch-and-clean-code",
     "type": "project",
+    "description": "project used for study purposes",
+    "license": "MIT",
     "authors": [
         {
             "name": "leosteil",
