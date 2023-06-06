@@ -26,7 +26,7 @@ final class CheckoutTest extends TestCase
         $this->getOrder = new GetOrder();
     }
 
-    public function testNaoDeveCriarUmPedidoComCPFInvalido()
+    public function testNaoDeveCriarUmPedidoComCPFInvalido(): void
     {
         $uuid = uniqid();
 
@@ -38,7 +38,7 @@ final class CheckoutTest extends TestCase
         $this->checkout->execute($input);
     }
 
-    public function testDeveCriarUmPedidoVazioComCPFValido()
+    public function testDeveCriarUmPedidoVazioComCPFValido(): void
     {
         $uuid = uniqid();
 
@@ -49,7 +49,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(0, $output->freight);
     }
 
-    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotal()
+    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotal(): void
     {
         $uuid = uniqid();
 
@@ -74,7 +74,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(6090, $output->total);
     }
 
-    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotalComDesconto()
+    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotalComDesconto(): void
     {
         $uuid = uniqid();
 
@@ -97,7 +97,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(4872, $output->total);
     }
 
-    public function testNaoDeveAplicarCupomDeDiscontoExpirado()
+    public function testNaoDeveAplicarCupomDeDiscontoExpirado(): void
     {
         $uuid = uniqid();
 
@@ -120,7 +120,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(6090, $output->total);
     }
 
-    public function testNaoDeveCriarUmPedidoComQuantidadeDeItensNegativos()
+    public function testNaoDeveCriarUmPedidoComQuantidadeDeItensNegativos(): void
     {
         $uuid = uniqid();
 
@@ -143,7 +143,7 @@ final class CheckoutTest extends TestCase
         $this->checkout->execute($input);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensDuplicados()
+    public function testNaoDeveCriarUmPedidoComItensDuplicados(): void
     {
         $uuid = uniqid();
 
@@ -167,7 +167,7 @@ final class CheckoutTest extends TestCase
         $this->checkout->execute($input);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensComDimensoesNegativas()
+    public function testNaoDeveCriarUmPedidoComItensComDimensoesNegativas(): void
     {
         $uuid = uniqid();
 
@@ -190,7 +190,7 @@ final class CheckoutTest extends TestCase
         $this->checkout->execute($input);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensComPesoNegativo()
+    public function testNaoDeveCriarUmPedidoComItensComPesoNegativo(): void
     {
         $uuid = uniqid();
 
@@ -213,7 +213,7 @@ final class CheckoutTest extends TestCase
         $this->checkout->execute($input);
     }
 
-    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFrete()
+    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFrete(): void
     {
         $uuid = uniqid();
 
@@ -235,7 +235,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(3090, $output->total);
     }
 
-    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFreteComFreteMinimo()
+    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFreteComFreteMinimo(): void
     {
         $uuid = uniqid();
 
@@ -257,7 +257,7 @@ final class CheckoutTest extends TestCase
         $this->assertEquals(40, $output->total);
     }
 
-    public function testDeveCriarUmPedidoCom1ProdutoEmDolar()
+    public function testDeveCriarUmPedidoCom1ProdutoEmDolar(): void
     {
         $uuid = uniqid();
 

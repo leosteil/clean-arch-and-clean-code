@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 
 final class IndexTest extends TestCase
 {
-    public function testNaoDeveCriarUmPedidoComCPFInvalido()
+    public function testNaoDeveCriarUmPedidoComCPFInvalido(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -23,7 +23,7 @@ final class IndexTest extends TestCase
         $this->assertEquals('cpf invalido', $responseBody->message);
     }
 
-    public function testDeveCriarUmPedidoVazioComCPFValido()
+    public function testDeveCriarUmPedidoVazioComCPFValido(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -39,7 +39,7 @@ final class IndexTest extends TestCase
         $this->assertEquals(0, $responseBody->total);
     }
 
-    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotal()
+    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotal(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -59,7 +59,7 @@ final class IndexTest extends TestCase
         $this->assertEquals(6090, $responseBody->total);
     }
 
-    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotalComDesconto()
+    public function testDeveCriarUmPedidoCom3ProdutosECalcularOValorTotalComDesconto(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -80,7 +80,7 @@ final class IndexTest extends TestCase
         $this->assertEquals(4872, $responseBody->total);
     }
 
-    public function testNaoDeveAplicarCupomDeDiscontoExpirado()
+    public function testNaoDeveAplicarCupomDeDiscontoExpirado(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -101,7 +101,7 @@ final class IndexTest extends TestCase
         $this->assertEquals(6090, $responseBody->total);
     }
 
-    public function testNaoDeveCriarUmPedidoComQuantidadeDeItensNegativos()
+    public function testNaoDeveCriarUmPedidoComQuantidadeDeItensNegativos(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -119,7 +119,7 @@ final class IndexTest extends TestCase
         $this->assertEquals('quantidade de itens invalida', $responseBody->message);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensDuplicados()
+    public function testNaoDeveCriarUmPedidoComItensDuplicados(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -138,7 +138,7 @@ final class IndexTest extends TestCase
         $this->assertEquals('item duplicado', $responseBody->message);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensComDimensoesNegativas()
+    public function testNaoDeveCriarUmPedidoComItensComDimensoesNegativas(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -156,7 +156,7 @@ final class IndexTest extends TestCase
         $this->assertEquals('item com dimensões negativas', $responseBody->message);
     }
 
-    public function testNaoDeveCriarUmPedidoComItensComPesoNegativo()
+    public function testNaoDeveCriarUmPedidoComItensComPesoNegativo(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -174,7 +174,7 @@ final class IndexTest extends TestCase
         $this->assertEquals('item com peso negativo', $responseBody->message);
     }
 
-    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFrete()
+    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFrete(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
@@ -195,7 +195,7 @@ final class IndexTest extends TestCase
         $this->assertEquals(3090, $responseBody->total);
     }
 
-    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFreteComFreteMinimo()
+    public function testDeveCriarUmPedidoCom1ProdutoCalculandoOFreteComFreteMinimo(): void
     {
         $client = new Client();
         $response = $client->request('POST', 'http://localhost:8000/checkout', [
